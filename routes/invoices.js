@@ -40,8 +40,7 @@ router.post('/', async (req, res, next) => {
             INSERT INTO invoices (comp_code, amt)
             VALUES ($1, $2)
             RETURNING id, comp_code, amt, paid, add_date, paid_date`,
-            [ comp_code, amt ]
-            )
+            [ comp_code, amt ])
 
         return res.status(201).json({invoice: results.rows[0]})
     } catch(e) {
@@ -77,9 +76,6 @@ router.put('/:id', async (req, res, next) => {
             RETURNING id, comp_code, amt, paid, add_date, paid_date`,
             [amt, paid, req.params.id]
         );
-
-        
-
         return res.json({invoice: result.rows[0]})
 
     } catch(e) {

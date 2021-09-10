@@ -1,12 +1,26 @@
 \c biztime
 
+DROP TABLE IF EXISTS comp_inds;
 DROP TABLE IF EXISTS invoices;
 DROP TABLE IF EXISTS companies;
+DROP TABLE IF EXISTS industries;
+
 
 CREATE TABLE companies (
     code text PRIMARY KEY,
     name text NOT NULL UNIQUE,
     description text
+);
+
+CREATE TABLE industries (
+  in_code text PRIMARY KEY,
+  industry text NOT NULL UNIQUE
+);
+
+CREATE TABLE comp_inds (
+  comp_code text REFERENCES companies ON DELETE CASCADE,
+  ind_code text REFERENCES industries ON DELETE CASCADE,
+  PRIMARY KEY (comp_code, ind_code)
 );
 
 CREATE TABLE invoices (
@@ -22,6 +36,17 @@ CREATE TABLE invoices (
 INSERT INTO companies
   VALUES ('apple', 'Apple Computer', 'Maker of OSX.'),
          ('ibm', 'IBM', 'Big blue.');
+
+INSERT INTO industries
+  VALUES('comm', 'Communications'),
+        ('tech', 'Tech'),
+        ('comp', 'Computers');
+
+INSERT INTO comp_inds
+  VALUES  ('apple', 'tech'),
+          ('apple', 'comm'),
+          ('ibm', 'tech'),
+          ('ibm', 'comp');
 
 INSERT INTO invoices (comp_Code, amt, paid, paid_date)
   VALUES ('apple', 100, false, null),
